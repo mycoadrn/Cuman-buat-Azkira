@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uji Konsentrasi & Ketajaman Mata</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* HALAMAN AWAL (SERIUS & FOKUS) */
+        .container {
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 15px;
+            color: #cccccc;
+        }
+
+        p {
+            font-size: 14px;
+            color: #888888;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .dot-focus {
+            width: 8px;
+            height: 8px;
+            background-color: #00ffcc;
+            border-radius: 50%;
+            margin: 30px auto;
+            box-shadow: 0 0 10px #00ffcc;
+            display: none;
+        }
+
+        button {
+            background: #111111;
+            color: #00ffcc;
+            border: 1px solid #00ffcc;
+            padding: 12px 25px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #00ffcc;
+            color: #000000;
+        }
+
+        /* LAYAR JUMPSCARE (HOROR) */
+        .jumpscare-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #ff0000;
+            z-index: 9999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ghost-face {
+            font-size: 130px;
+            animation: shake 0.05s infinite alternate;
+        }
+
+        .scary-text {
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #000;
+            animation: shake 0.08s infinite alternate;
+        }
+
+        /* EFEK BERGONCANG KERAS */
+        @keyframes shake {
+            0% { transform: translate(10px, 10px) scale(1.1); }
+            50% { transform: translate(-10px, -15px) scale(1.2); }
+            100% { transform: translate(-15px, 10px) scale(1.0); }
+        }
+
+        /* HALAMAN KENA PRANK (SETELAH KAGET) */
+        .reveal-btn {
+            margin-top: 30px;
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STEPS PERSIAPAN -->
+    <div class="container" id="introBox">
+        <h2>Tes Ketajaman Mata & Pendengaran</h2>
+        <p id="instructionText">
+            Pastikan volume perangkat kamu aktif.<br>
+            Tekan tombol di bawah lalu perhatikan titik hijau di tengah layar tanpa berkedip selama 5 detik.
+        </p>
+
+        <div class="dot-focus" id="focusDot"></div>
+
+        <button id="startBtn" onclick="startTest()">MULAI TES 👁️</button>
+    </div>
+
+    <!-- TAMPILAN JUMPSCARE HOROR -->
+    <div class="jumpscare-screen" id="scareBox">
+        <div class="ghost-face">👹</div>
+        <div class="scary-text">GHOST DETECTED!</div>
+        <button class="reveal-btn" onclick="stopScare()">Kena Prank Mampus! 😂 (Klik Buat Stop)</button>
+    </div>
+
+    <script>
+        // Menggunakan Web Audio API untuk menghasilkan suara teriakan/sirine melengking tinggi secara otomatis (Tanpa perlu download file audio luar)
+        let audioCtx;
+
+        function playScarySound() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Oscillator 1 (Suara Frekuensi Tinggi Melengking)
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(3000, audioCtx.currentTime + 0.1);
+            osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.5);
+
+            gain.gain.setValueAtTime(1, audioCtx.currentTime);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            
+            // Bikin suara berulang-ulang biar makin berisik
+            const interval = setInterval(() => {
+                if(!audioCtx) {
+                    clearInterval(interval);
+                    return;
+                }
+                osc.frequency.setValueAtTime(Math.random() * 2000 + 1000, audioCtx.currentTime);
+            }, 100);
+        }
+
+        function startTest() {
+            // Minta layar Fullscreen otomatis biar ga bisa kabur
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(()=>{});
+            }
+
+            document.getElementById('startBtn').style.display = 'none';
+            document.getElementById('instructionText').innerText = "Fokus... Jangan berkedip pada titik hijau di bawah ini...";
+            document.getElementById('focusDot').style.display = 'block';
+
+            // Hitung mundur 5 detik sebelum JUMPSCARE meledak
+            setTimeout(() => {
+                triggerJumpscare();
+            }, 4000);
+        }
+
+        function triggerJumpscare() {
+            document.getElementById('introBox').style.display = 'none';
+            document.getElementById('scareBox').style.display = 'flex';
+            
+            // Bunyikan Suara Melengking
+            playScarySound();
+
+            // Efek HP Bergetar (Jika dibuka via HP)
+            if (navigator.vibrate) {
+                navigator.vibrate([500, 100, 500, 100, 500, 100, 1000]);
+            }
+        }
+
+        function stopScare() {
+            if (audioCtx) {
+                audioCtx.close();
+            }
+            alert('Maaf ya sayangg hehehe');
+            location.reload();
+        }
+    </script>
+
+</body>
+</html>
