@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Cinta Dari Bang Miko</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #ffeef2;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 400px;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.15);
+            text-align: center;
+        }
+
+        .emoji {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #ff4d6d;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        p.question {
+            color: #444;
+            font-size: 16px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button.opt-btn {
+            background: #fff0f3;
+            border: 2px solid #ffb3c1;
+            color: #c9184a;
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        button.opt-btn:active {
+            transform: scale(0.98);
+            background: #ffc6ff;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #ff4d6d;
+            min-height: 20px;
+        }
+
+        .quiz-page {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- TEBAKAN 1 -->
+        <div class="quiz-page active" id="q1">
+            <div class="emoji">🤔</div>
+            <h2>Tebakan 1/3</h2>
+            <p class="question">Dimana Miko Kerja</p>
+            <div class="options">
+                <button class="opt-btn" onclick="wrongAnswer(1, 'Ngaa anjir disana gaji nya kecil')">Kiddyhope</button>
+                <button class="opt-btn" onclick="wrongAnswer(1, 'Kok gatau aku kerja dimana bangsat')">Indomaret</button>
+                <button class="opt-btn" onclick="correctAnswer(1, 2)">Vanhollano</button>
+            </div>
+            <div class="feedback" id="fb1"></div>
+        </div>
+
+        <!-- TEBAKAN 2 -->
+        <div class="quiz-page" id="q2">
+            <div class="emoji">🐼</div>
+            <h2>Tebakan 2/3</h2>
+            <p class="question">Apa yang paling disukai miko dari kiran</p>
+            <div class="options">
+                <button class="opt-btn" onclick="wrongAnswer(2, 'Iya juga yaa. ketek enak tapi salah')">Ketek</button>
+                <button class="opt-btn" onclick="correctAnswer(2, 3)">Ga ada sih semuanya enak</button>
+                <button class="opt-btn" onclick="wrongAnswer(2, 'Pedeee banget sii kecill')">Pandangin Azkira tiap hari! 🥰</button>
+            </div>
+            <div class="feedback" id="fb2"></div>
+        </div>
+
+        <!-- TEBAKAN 3 -->
+        <div class="quiz-page" id="q3">
+            <div class="emoji">🚗</div>
+            <h2>Tebakan 3/3</h2>
+            <p class="question">Kamu tau gak kenapa aku gak butuh GPS kalau sama kamu?</p>
+            <div class="options">
+                <button class="opt-btn" onclick="correctAnswer(3, 'final')">Soalnya tujuan akhirku kan cuma Kamu! 😳❤️</button>
+                <button class="opt-btn" onclick="wrongAnswer(3, 'Ngeliat maps aja kadang tololl')">Soalnya kamu suka nyasar</button>
+                <button class="opt-btn" onclick="wrongAnswer(3, 'Ya pinjam hospot dong')">Soalnya kuota aku habis</button>
+            </div>
+            <div class="feedback" id="fb3"></div>
+        </div>
+
+        <!-- HALAMAN AKHIR -->
+        <div class="quiz-page" id="qFinal">
+            <div class="emoji">💐❤️</div>
+            <h2>Skor Kamu: 1000/100!</h2>
+            <p class="question">
+                Makasih ya udah mau main kuis singkat ini.<br><br>
+                <strong>Intinya: I love you so much! Gak ada tebakan yang bisa ngalahin manisnya kamu. 🥰</strong>
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        function wrongAnswer(qNum, text) {
+            document.getElementById('fb' + qNum).innerText = text;
+        }
+
+        function correctAnswer(currentQ, nextQ) {
+            if (nextQ === 'final') {
+                document.getElementById('q' + currentQ).classList.remove('active');
+                document.getElementById('qFinal').classList.add('active');
+            } else {
+                document.getElementById('q' + currentQ).classList.remove('active');
+                document.getElementById('q' + nextQ).classList.add('active');
+            }
+        }
+    </script>
+
+</body>
+</html>
