@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM CRITICAL ERROR</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: #050505;
+            color: #00ff66;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .terminal-box {
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid #00ff66;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
+            padding: 30px 20px;
+            max-width: 450px;
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .title {
+            color: #ff3333;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .logs {
+            font-size: 13px;
+            line-height: 1.6;
+            height: 160px;
+            overflow-y: hidden;
+            color: #00ff66;
+            margin-bottom: 20px;
+            border-bottom: 1px dashed #333;
+            padding-bottom: 10px;
+        }
+
+        .progress-title {
+            font-size: 13px;
+            color: #cccccc;
+            margin-bottom: 5px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #222;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #444;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #ff3333;
+            transition: width 0.3s ease;
+        }
+
+        .btn-cancel {
+            background-color: #ff3333;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-family: sans-serif;
+        }
+
+        .btn-cancel:active {
+            transform: scale(0.98);
+        }
+
+        /* Tampilan Surprise / Pembongkaran Prank */
+        .reveal-box {
+            display: none;
+            text-align: center;
+            color: #ffffff;
+            font-family: sans-serif;
+        }
+
+        .reveal-box h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .reveal-box h2 {
+            color: #ffcc00;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .reveal-box p {
+            color: #aaaaaa;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HALAMAN PRANK HACKING -->
+    <div class="terminal-box" id="prankScreen">
+        <div class="title">⚠️ UNAUTHORIZED SYSTEM ACCESS ⚠️</div>
+        
+        <div class="logs" id="logContainer">
+            > Initializing exploit module...<br>
+            > Accessing internal storage...<br>
+        </div>
+
+        <div class="progress-title">Deleting All Files & Gallery: <span id="percentText">0%</span></div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <button class="btn-cancel" onclick="cancelHack()">BATALKAN PENGHAPUSAN 🛑</button>
+    </div>
+
+    <!-- HALAMAN PRANK TERBONGKAR -->
+    <div class="reveal-box" id="revealScreen">
+        <h1>🤡🤪</h1>
+        <h2>Cemas Kau Dekkk dek wkwkwk</h2>
+        <p>paniklah kamu ni abang rasa wkwkwk<br><br>hp kamu aman kok sayang, gak ada yang dihapus. Santai aja kirann</p>
+        <p>Btw ada saldo ga, mutar mahjong yok</p>
+    </div>
+
+    <script>
+        const logs = [
+            "> Bypassing security firewall...",
+            "> Accessing WhatsApp Chat Database...",
+            "> Indexing photo album & videos...",
+            "> Uploading private files to cloud server...",
+            "> Wiping System Root Directory...",
+            "> Format SD Card / Internal Storage...",
+            "> Overwriting BIOS bootloader..."
+        ];
+
+        let progress = 0;
+        let logIndex = 0;
+        const logContainer = document.getElementById('logContainer');
+        const progressBar = document.getElementById('progressBar');
+        const percentText = document.getElementById('percentText');
+
+        // Simulasi Log & Progress Bar Berjalan
+        const interval = setInterval(() => {
+            progress += Math.floor(Math.random() * 8) + 3;
+
+            if (progress > 100) progress = 100;
+
+            progressBar.style.width = progress + '%';
+            percentText.innerText = progress + '%';
+
+            if (logIndex < logs.length && progress > (logIndex + 1) * 12) {
+                logContainer.innerHTML += logs[logIndex] + "<br>";
+                logContainer.scrollTop = logContainer.scrollHeight;
+                logIndex++;
+            }
+
+            if (progress >= 100) {
+                clearInterval(interval);
+                setTimeout(showReveal, 800);
+            }
+        }, 500);
+
+        function cancelHack() {
+            // Pas tombol "Batal" diklik, malah langsung kebongkar pranknya
+            clearInterval(interval);
+            showReveal();
+        }
+
+        function showReveal() {
+            document.getElementById('prankScreen').style.display = 'none';
+            document.getElementById('revealScreen').style.display = 'block';
+            document.body.style.backgroundColor = '#111111';
+        }
+    </script>
+
+</body>
+</html>
